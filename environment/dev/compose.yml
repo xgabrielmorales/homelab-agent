@@ -18,7 +18,7 @@ services:
       - otel-lgtm
       - mcp-grafana
       - mcp-kubernetes
-      - ntfy
+      - gotify
     ports:
       - "8000:8000"
     volumes:
@@ -55,9 +55,10 @@ services:
       - ./environment/dev/kubernetes-mcp-server.toml:/config.toml:ro
       - ${XDG_RUNTIME_DIR}/homelab-kubeconfig:/kubeconfig:ro
 
-  ntfy:
-    image: binwiederhier/ntfy:v2.38.1@sha256:038da2be5e668fee6d36a62884eea48975e1b71c29a56964e5298c1b9165a573
+  gotify:
+    image: gotify/server:3.1.1@sha256:44fc5bbd1c0618878e33073d38c2c13126b48f245c3fe12236b1da48eb203b86
     restart: unless-stopped
-    command: [ "serve" ]
+    environment:
+      GOTIFY_DEFAULTUSER_PASS:
     ports:
       - "8090:80"

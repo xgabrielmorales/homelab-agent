@@ -8,7 +8,7 @@ AI agent that knows what is happening in my homelab. It reads the k3s cluster, G
 ## Features
 
 - **Chat**: ask about the homelab from the browser. The web chat is only reachable from the LAN or the WireGuard VPN.
-- **Daily report**: a 07:00 summary of the homelab's health, pushed to ntfy.
+- **Daily report**: a 07:00 summary of the homelab's health, pushed to Gotify.
 - **Read-only**: it can look at everything and change nothing. Logs, events and PRs are treated as data, never as instructions.
 - **Observability**: connect it to your OpenTelemetry stack to trace every run and track tokens and cost.
 
@@ -22,4 +22,4 @@ A single [pydantic-ai](https://ai.pydantic.dev) agent on OpenAI GPT 6.1 Terra th
 | Kubernetes MCP (`kubernetes-mcp-server`)              | Kubernetes API                          | Pods, events, logs, Flux resources and memory usage |
 | `open_pull_requests`, `open_issues`, `recent_commits` | Forgejo API                             | Pending Renovate PRs and recent changes to `trunk`  |
 
-Everything is read-only: the MCP servers run with their write tools disabled, the Kubernetes service account is bound to the `view` role (no Secrets) and the Forgejo token only has read scopes. The only write is the report, which the code (not the agent) publishes to ntfy, so a log or a PR that tries to instruct the agent cannot send anything.
+Everything is read-only: the MCP servers run with their write tools disabled, the Kubernetes service account is bound to the `view` role (no Secrets) and the Forgejo token only has read scopes. The only write is the report, which the code (not the agent) publishes to Gotify, so a log or a PR that tries to instruct the agent cannot send anything.

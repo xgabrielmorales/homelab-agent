@@ -1,6 +1,5 @@
 import asyncio
 from datetime import UTC, datetime, time, timedelta
-from typing import Literal
 from zoneinfo import ZoneInfo
 
 import httpx
@@ -15,12 +14,12 @@ from src.agents.homelab.constants import DAILY_REPORT_PROMPT, MAX_MODEL_REQUESTS
 from src.agents.homelab.entities import DailyReport
 from src.common import settings
 from src.tools import Deps
-from src.tools.ntfy import publish
+from src.tools.gotify import publish
 
-PRIORITY_BY_STATUS: dict[str, Literal[1, 2, 3, 4, 5]] = {
+PRIORITY_BY_STATUS = {
     "ok": 2,
-    "atencion": 3,
-    "critico": 5,
+    "atencion": 5,
+    "critico": 8,
 }
 
 
@@ -46,7 +45,7 @@ async def publish_daily_report(http: httpx.AsyncClient) -> None:
                 http=http,
                 title="Homelab: reporte fallido",
                 message=f"No se pudo generar el reporte diario: {type(error).__name__}.",
-                priority=4,
+                priority=6,
             )
             return
 
@@ -66,4 +65,4 @@ async def schedule_daily_report(http: httpx.AsyncClient) -> None:
         try:
             await publish_daily_report(http)
         except httpx.HTTPError:
-            logfire.exception("failed to publish the report to ntfy")
+            logfire.exception("failed to publish the report to gotify")

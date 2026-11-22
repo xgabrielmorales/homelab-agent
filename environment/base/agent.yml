@@ -12,9 +12,8 @@ services:
       FORGEJO_TOKEN:
       GRAFANA_MCP_URL:
       KUBERNETES_MCP_URL:
-      NTFY_URL:
-      NTFY_TOPIC:
-      NTFY_TOKEN:
+      GOTIFY_URL:
+      GOTIFY_TOKEN:
       REPORT_TIME:
       ALLOWED_HOSTS:
     command: [ "python", "-m", "src.main" ]

@@ -33,12 +33,14 @@ def test_seconds_until(now: datetime, expected: float) -> None:
 def publish_with(model: TestModel | FunctionModel) -> dict[str, object]:
     published_messages: list[dict[str, object]] = []
 
-    def ntfy(request: httpx.Request) -> httpx.Response:
+    def gotify(request: httpx.Request) -> httpx.Response:
+        assert request.url == "http://gotify.test/message"
+        assert request.headers["X-Gotify-Key"] == "test"
         published_messages.append(json.loads(request.content))
         return httpx.Response(200)
 
     async def run_report() -> None:
-        async with httpx.AsyncClient(transport=httpx.MockTransport(ntfy)) as http:
+        async with httpx.AsyncClient(transport=httpx.MockTransport(gotify)) as http:
             with homelab_agent.override(model=model, toolsets=[]):
                 await publish_daily_report(http)
 
@@ -53,7 +55,7 @@ def test_publishes_report_with_status_priority() -> None:
     )
     assert published["title"] == "Homelab: critico"
     assert published["message"] == "Loki caído"
-    assert published["priority"] == 5
+    assert published["priority"] == 8
 
 
 def test_notifies_when_report_fails() -> None:
@@ -62,4 +64,4 @@ def test_notifies_when_report_fails() -> None:
 
     published = publish_with(FunctionModel(fail))
     assert published["title"] == "Homelab: reporte fallido"
-    assert published["priority"] == 4
+    assert published["priority"] == 6

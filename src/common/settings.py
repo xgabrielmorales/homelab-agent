@@ -24,9 +24,8 @@ class Settings(BaseSettings):
     GRAFANA_MCP_URL: str = "http://127.0.0.1:8001/mcp"
     KUBERNETES_MCP_URL: str = "http://127.0.0.1:8002/mcp"
 
-    NTFY_URL: str
-    NTFY_TOPIC: str = "homelab"
-    NTFY_TOKEN: SecretStr
+    GOTIFY_URL: str
+    GOTIFY_TOKEN: SecretStr
 
     REPORT_TIME: time = time(7, 0)
 
