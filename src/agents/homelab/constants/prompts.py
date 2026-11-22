@@ -30,3 +30,16 @@ Consulta los datos antes de afirmar algo sobre el estado del homelab; no suponga
 """
 
 MAX_MODEL_REQUESTS = 25
+
+DAILY_REPORT_PROMPT = """\
+Prepara el reporte diario del homelab con lo ocurrido en las últimas 24 horas. Revisa en este orden:
+
+1. Alertas activas en Grafana/Alertmanager.
+2. Pods que no están Ready, con reinicios recientes o en CrashLoopBackOff, y eventos Warning.
+3. Kustomizations y HelmReleases de Flux que no estén Ready.
+4. Errores frecuentes en los logs de Loki.
+5. Memoria del nodo `xgm-hm` y los pods que más consumen.
+6. Pull requests abiertos de Renovate en `xgabrielmorales/homelab` y los commits recientes de `trunk`.
+
+Menciona solo lo que requiere atención; si todo está bien, dilo en una línea.
+"""

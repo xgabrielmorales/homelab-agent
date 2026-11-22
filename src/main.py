@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING
 
@@ -8,7 +9,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Mount, Route
 
-from src.agents import homelab_agent
+from src.agents import homelab_agent, schedule_daily_report
 from src.common import configure_observability, settings
 from src.tools import Deps
 
@@ -23,7 +24,9 @@ async def lifespan(app: Starlette) -> AsyncIterator[None]:
     configure_observability()
 
     async with async_http_client:
+        report = asyncio.create_task(schedule_daily_report(async_http_client))
         yield
+        report.cancel()
 
 
 async def healthcheck(request: Request) -> JSONResponse:
