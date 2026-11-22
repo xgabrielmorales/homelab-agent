@@ -10,6 +10,7 @@
           pkgs.uv
           pkgs.sops
           pkgs.age
+          pkgs.just
         ];
       };
     }) inputs.nixpkgs.legacyPackages;
