@@ -20,7 +20,9 @@ ENV \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
     PYTHONUNBUFFERED=1 \
-    PATH="/venv/bin:$PATH"
+    PATH="/venv/bin:$PATH" \
+    ENVIRONMENT=prod \
+    UVICORN_HOST=0.0.0.0
 
 ARG \
     GROUP_ID="65532" \
@@ -41,3 +43,5 @@ COPY --from=builder /venv /venv
 COPY --chown="${USER_ID}:${GROUP_ID}" ./src ./src
 
 USER "${USER_ID}:${GROUP_ID}"
+
+CMD [ "python", "-m", "src.main" ]
