@@ -2,4 +2,15 @@ services:
   agent-base:
     environment:
       ENVIRONMENT:
+      UVICORN_HOST: 0.0.0.0
+      UVICORN_PORT: 8000
+      OTEL_AUTH_TOKEN:
+      OTEL_EXPORTER_OTLP_ENDPOINT:
     command: [ "python", "-m", "src.main" ]
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:8000/healthcheck', timeout=1)" ]
+      start_period: 20s
+      start_interval: 2s
+      interval: 10s
+      timeout: 5s
+      retries: 5

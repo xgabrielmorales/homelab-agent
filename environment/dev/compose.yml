@@ -11,6 +11,8 @@ services:
     restart: unless-stopped
     environment:
       ENVIRONMENT: dev
+    ports:
+      - "8000:8000"
     volumes:
       - .:/app
     tty: true
