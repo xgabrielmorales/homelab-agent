@@ -6,6 +6,17 @@ services:
       UVICORN_PORT: 8000
       OTEL_AUTH_TOKEN:
       OTEL_EXPORTER_OTLP_ENDPOINT:
+      OPENROUTER_API_KEY:
+      MODEL:
+      FORGEJO_URL:
+      FORGEJO_TOKEN:
+      GRAFANA_MCP_URL:
+      KUBERNETES_MCP_URL:
+      NTFY_URL:
+      NTFY_TOPIC:
+      NTFY_TOKEN:
+      REPORT_TIME:
+      ALLOWED_HOSTS:
     command: [ "python", "-m", "src.main" ]
     healthcheck:
       test: [ "CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:8000/healthcheck', timeout=1)" ]

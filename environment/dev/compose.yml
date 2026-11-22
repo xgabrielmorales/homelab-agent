@@ -16,9 +16,48 @@ services:
       ENVIRONMENT: dev
     depends_on:
       - otel-lgtm
+      - mcp-grafana
+      - mcp-kubernetes
+      - ntfy
     ports:
       - "8000:8000"
     volumes:
       - .:/app
     tty: true
     stdin_open: true
+
+  mcp-grafana:
+    image: grafana/mcp-grafana:2.3.0@sha256:c27248b5919d09d64ea273ca1b128b32902c6796f6e2dfcd11849d4f1363f9ed
+    restart: unless-stopped
+    entrypoint:
+      - /app/mcp-grafana
+      - --transport
+      - streamable-http
+      - --address
+      - 0.0.0.0:8001
+      - --allowed-hosts
+      - mcp-grafana:8001
+      - --disable-write
+      - --enabled-tools
+      - search,datasource,prometheus,loki,alerting,dashboard
+      - --usage-stats
+      - disabled
+    environment:
+      GRAFANA_URL: https://grafana.xgabrielmorales.com
+      GRAFANA_SERVICE_ACCOUNT_TOKEN:
+
+  mcp-kubernetes:
+    image: quay.io/containers/kubernetes_mcp_server:v0.1.3@sha256:6347155616c49c78512114500688b50d275ddde7597b6a38cefe6f40a8c42c16
+    restart: unless-stopped
+    user: "0:0"
+    command: [ "--config", "/config.toml" ]
+    volumes:
+      - ./environment/dev/kubernetes-mcp-server.toml:/config.toml:ro
+      - ${XDG_RUNTIME_DIR}/homelab-kubeconfig:/kubeconfig:ro
+
+  ntfy:
+    image: binwiederhier/ntfy:v2.38.1@sha256:038da2be5e668fee6d36a62884eea48975e1b71c29a56964e5298c1b9165a573
+    restart: unless-stopped
+    command: [ "serve" ]
+    ports:
+      - "8090:80"
