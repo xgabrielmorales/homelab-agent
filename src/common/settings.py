@@ -1,3 +1,4 @@
+from datetime import time
 from typing import Literal
 
 from pydantic import SecretStr
@@ -11,6 +12,22 @@ class Settings(BaseSettings):
         case_sensitive=True,
     )
     ENVIRONMENT: Literal["dev", "prod"] = "dev"
+    TIMEZONE: str = "America/Bogota"
+
+    OPENROUTER_API_KEY: SecretStr
+    MODEL: str = "openai/gpt-6.1-terra"
+
+    FORGEJO_URL: str
+    FORGEJO_TOKEN: SecretStr
+
+    GRAFANA_MCP_URL: str = "http://127.0.0.1:8001/mcp"
+    KUBERNETES_MCP_URL: str = "http://127.0.0.1:8002/mcp"
+
+    NTFY_URL: str
+    NTFY_TOPIC: str = "homelab"
+    NTFY_TOKEN: SecretStr
+
+    REPORT_TIME: time = time(7, 0)
 
     OTEL_AUTH_TOKEN: SecretStr | None = None
     OTEL_EXPORTER_OTLP_ENDPOINT: str | None = None
@@ -18,6 +35,7 @@ class Settings(BaseSettings):
     UVICORN_HOST: str = "127.0.0.1"
     UVICORN_PORT: int = 8000
     UVICORN_WORKERS: int = 1
+    ALLOWED_HOSTS: list[str] = []
 
 
-settings = Settings()
+settings = Settings()  # type: ignore[call-arg]

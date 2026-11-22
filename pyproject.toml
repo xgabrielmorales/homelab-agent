@@ -3,13 +3,12 @@ name = "homelab-agent"
 version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
-    "fastapi==0.165.0",
     "httpx==0.28.1",
     "logfire[httpx]==6.0.0",
     "pydantic==2.14.4",
-    "pydantic-ai-slim[retries]==2.71.0",
+    "pydantic-ai-slim[mcp,openrouter,retries,web]==2.71.0",
     "pydantic-settings==2.16.3",
-    "scalar-fastapi==1.9.1",
+    "starlette==1.10.0",
     "uvicorn==0.54.0",
 ]
 

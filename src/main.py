@@ -1,11 +1,11 @@
 from contextlib import asynccontextmanager
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
-import httpx
 import uvicorn
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
-from scalar_fastapi import get_scalar_api_reference
+from starlette.applications import Starlette
+from starlette.requests import Request
+from starlette.responses import JSONResponse
+from starlette.routing import Route
 
 from src.common import configure_observability, settings
 
@@ -14,35 +14,19 @@ if TYPE_CHECKING:
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[dict[str, Any]]:
+async def lifespan(app: Starlette) -> AsyncIterator[None]:
     configure_observability()
-
-    async with httpx.AsyncClient(timeout=30) as async_http_client:
-        yield {"async_http_client": async_http_client}
+    yield
 
 
-app = FastAPI(
-    title="Homelab Agent",
+async def healthcheck(request: Request) -> JSONResponse:
+    return JSONResponse({"status": "ok"})
+
+
+app = Starlette(
+    routes=[Route("/healthcheck", healthcheck)],
     lifespan=lifespan,
-    docs_url=None,
-    redoc_url=None,
 )
-
-
-@app.get("/docs", include_in_schema=False)
-async def show_scalar_docs() -> HTMLResponse:
-    return get_scalar_api_reference(
-        openapi_url="/openapi.json",
-        title=app.title,
-        hide_client_button=True,
-        hide_download_button=True,
-        hide_models=True,
-    )
-
-
-@app.get("/healthcheck", include_in_schema=False)
-async def healthcheck() -> dict[str, str]:
-    return {"status": "ok"}
 
 
 if __name__ == "__main__":
