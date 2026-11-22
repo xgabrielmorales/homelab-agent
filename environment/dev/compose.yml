@@ -1,5 +1,8 @@
 name: homelab-agent-dev
 
+include:
+  - environment/base/otel-lgtm.yml
+
 services:
   agent:
     extends:
@@ -11,6 +14,8 @@ services:
     restart: unless-stopped
     environment:
       ENVIRONMENT: dev
+    depends_on:
+      - otel-lgtm
     ports:
       - "8000:8000"
     volumes:
