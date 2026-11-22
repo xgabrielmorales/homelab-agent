@@ -26,6 +26,14 @@ ARG \
     GROUP_ID="65532" \
     USER_ID="65532"
 
+ADD \
+    --chmod=644 \
+    --checksum=sha256:18ad2ee902620e4c3e089a2979bc822612db31e0db48fde8e759aa78ce79f7f8 \
+    https://cdn.jsdelivr.net/npm/@pydantic/ai-chat-ui@2.1.0/offline/index.html \
+    /opt/chat-ui.html
+
+ENV CHAT_UI_HTML=/opt/chat-ui.html
+
 WORKDIR /app
 
 COPY --from=builder /venv /venv

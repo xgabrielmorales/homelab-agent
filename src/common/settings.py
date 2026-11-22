@@ -1,4 +1,5 @@
 from datetime import time
+from pathlib import Path
 from typing import Literal
 
 from pydantic import SecretStr
@@ -36,6 +37,7 @@ class Settings(BaseSettings):
     UVICORN_PORT: int = 8000
     UVICORN_WORKERS: int = 1
     ALLOWED_HOSTS: list[str] = []
+    CHAT_UI_HTML: Path | None = None
 
 
 settings = Settings()  # type: ignore[call-arg]
