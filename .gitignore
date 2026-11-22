@@ -1,0 +1,11 @@
+/.env
+/.env.*
+environment/*
+!environment/*/
+environment/*/*.env
+!environment/*/.dev.encrypted.env
+!environment/*/.prod.encrypted.env
+!environment/*/.sops.yaml
+
+.venv/
+__pycache__/

@@ -1,0 +1,25 @@
+[project]
+name = "homelab-agent"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "prek==0.5.11",
+    "ruff==0.17.6",
+    "zuban==0.10.2",
+]
+
+[tool.uv]
+add-bounds = "exact"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+
+[tool.zuban]
+strict = true
+ignore_missing_imports = true

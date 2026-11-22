@@ -1,0 +1,14 @@
+name: homelab-agent-prod
+
+services:
+  agent:
+    extends:
+      file: ../base/agent.yml
+      service: agent-base
+    image: ${IMAGE}
+    build:
+      context: ../..
+      dockerfile: environment/prod/Dockerfile
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: prod

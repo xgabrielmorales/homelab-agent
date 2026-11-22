@@ -1,0 +1,5 @@
+services:
+  agent-base:
+    environment:
+      ENVIRONMENT:
+    command: [ "python", "-m", "src.main" ]

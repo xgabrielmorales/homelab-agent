@@ -1,0 +1,17 @@
+name: homelab-agent-dev
+
+services:
+  agent:
+    extends:
+      file: environment/base/agent.yml
+      service: agent-base
+    build:
+      context: .
+      dockerfile: ./environment/dev/Dockerfile
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: dev
+    volumes:
+      - .:/app
+    tty: true
+    stdin_open: true

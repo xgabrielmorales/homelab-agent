@@ -1,0 +1,31 @@
+repos:
+  - repo: "https://github.com/pre-commit/pre-commit-hooks"
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-toml
+      - id: check-yaml
+        args: ["--allow-multiple-documents"]
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: zuban
+        name: Zuban
+        language: system
+        entry: uv run zuban check --strict src/
+        types_or: [python, pyi]
+        pass_filenames: false
+
+      - id: ruff-linter
+        name: Ruff Linter
+        language: system
+        entry: uv run ruff check --fix .
+        types_or: [python, pyi]
+
+      - id: ruff-format
+        name: Ruff Format
+        language: system
+        entry: uv run ruff format .
+        types_or: [python, pyi]
